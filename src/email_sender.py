@@ -12,6 +12,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+from email.utils import make_msgid, formatdate
 
 logger = logging.getLogger(__name__)
 
@@ -49,9 +50,11 @@ def send_report(html_path: str, report_title: str = "AI 行业日报", period: d
     plain_text = f"{report_title} · {date_disp}\n\n请下载附件用浏览器打开查看完整{period['label']}。"
 
     msg = MIMEMultipart("mixed")
-    msg["From"]    = SENDER_EMAIL
-    msg["To"]      = ", ".join(RECIPIENTS)
-    msg["Subject"] = subject
+    msg["From"]       = SENDER_EMAIL
+    msg["To"]         = ", ".join(RECIPIENTS)
+    msg["Subject"]    = subject
+    msg["Date"]       = formatdate(localtime=True)
+    msg["Message-ID"] = make_msgid()
 
     body = MIMEMultipart("alternative")
     body.attach(MIMEText(plain_text, "plain", "utf-8"))
