@@ -7,6 +7,7 @@ import os
 import re
 import imaplib
 import email
+import email.message        # 显式导入：否则未先导入 http.client 时 email.message 属性不存在
 import logging
 from datetime import datetime, timedelta, timezone
 from email.header import decode_header

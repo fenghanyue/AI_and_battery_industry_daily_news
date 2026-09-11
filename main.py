@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from config.settings    import load_profile, load_period
 from src.news_fetcher   import fetch_all
+from src.sources        import available_sources
 from src.ai_summarizer  import summarize_all
 from src.html_generator import generate_html
 from src.email_sender   import send_report
@@ -41,7 +42,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def main(profile_name="ai", period_name="daily", dry_run=False, no_fetch=False):
+def main(profile_name="ai", period_name="daily", dry_run=False, no_fetch=False,
+         sources=None):
     # ── 加载行业配置 + 周期配置 ──
     profile    = load_profile(profile_name)
     period     = load_period(period_name)
@@ -67,7 +69,8 @@ def main(profile_name="ai", period_name="daily", dry_run=False, no_fetch=False):
         # Step 1: 抓取回溯期内新闻
         logger.info("Step 1/3: 抓取最近 %d 天新闻...", period["lookback_days"])
         raw_news = fetch_all(categories, lookback_days=period["lookback_days"],
-                             alert_subjects=alert_subjects)
+                             alert_subjects=alert_subjects,
+                             sources=sources, profile=profile)
 
         # Step 2: 豆包筛选摘要
         logger.info("Step 2/3: 豆包筛选摘要...")
@@ -109,6 +112,9 @@ if __name__ == "__main__":
                         help="报告周期：daily=日报(回溯1天), weekly=周报(回溯7天)")
     parser.add_argument("--dry-run",  action="store_true", help="不发邮件，只生成 HTML")
     parser.add_argument("--no-fetch", action="store_true", help="用缓存数据，不重新抓取")
+    parser.add_argument("--sources",  default=None,
+                        help="启用的数据源，逗号分隔（可选：%s；默认取环境变量 SOURCES / 行业配置，未配置时只有 gmail）"
+                             % ", ".join(available_sources()))
     args = parser.parse_args()
     main(profile_name=args.profile, period_name=args.period,
-         dry_run=args.dry_run, no_fetch=args.no_fetch)
+         dry_run=args.dry_run, no_fetch=args.no_fetch, sources=args.sources)

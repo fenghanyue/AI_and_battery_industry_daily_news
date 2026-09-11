@@ -175,3 +175,35 @@ CATEGORIES = [
         ],
     },
 ]
+
+# ═══════════════════════════════════════════════════
+#  数据源配置（见 src/sources/）
+# ═══════════════════════════════════════════════════
+# 启用哪些数据源。可选：gmail / rss / search
+# 优先级：--sources 参数 > 环境变量 SOURCES > 此处配置 > 默认 ["gmail"]
+#
+# 建议：Gmail 可用时用 ["gmail", "rss"] 双源互补；
+#       Gmail 不可用（无法访问 Google / 地区限制 / 不想配 Google Alerts）时改为 ["rss"]。
+SOURCES = ["gmail"]
+
+# ── RSS 订阅源（SOURCES 含 "rss" 时生效，纯标准库抓取，无需 API key）──
+RSS_FEEDS = [
+    # 国内
+    {"name": "36氪快讯",             "url": "https://www.36kr.com/feed-newsflash",       "region": "cn"},
+    {"name": "IT之家",               "url": "https://www.ithome.com/rss/",             "region": "cn"},
+    {"name": "钛媒体",               "url": "https://www.tmtpost.com/rss.xml",         "region": "cn"},
+    # 海外
+    {"name": "electrive",           "url": "https://www.electrive.com/feed/",         "region": "global"},
+    {"name": "Electrek",            "url": "https://electrek.co/feed/",               "region": "global"},
+    {"name": "CleanTechnica",       "url": "https://cleantechnica.com/feed/",         "region": "global"},
+    {"name": "Energy-Storage.news", "url": "https://www.energy-storage.news/feed/",   "region": "global"},
+]
+
+# ── 搜索源检索式（SOURCES 含 "search" 时生效）──
+# 留空则自动取 CATEGORIES 里前 3 个分类的首个关键词兜底。
+# 需要同时配置：SEARCH_PROVIDER / SEARCH_API_URL（或 TAVILY_API_KEY）
+SEARCH_QUERIES = [
+    "锂电池 行业 最新消息",
+    "储能 项目 中标 最新",
+    "动力电池 装车量 最新",
+]

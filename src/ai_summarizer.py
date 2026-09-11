@@ -63,7 +63,7 @@ def summarize_category(cat: Dict, articles: List[Dict], date_phrase: str,
 
     prompt = f"""你是行业编辑，正在整理【{cat['name']}】分类{date_phrase}的新闻。
 
-以下是候选文章（共 {len(articles)} 条，来自 Google Alerts，时效性已确认）：
+以下是候选文章（共 {len(articles)} 条，来自已配置的新闻源，时效性已确认）：
 
 {news_text}
 

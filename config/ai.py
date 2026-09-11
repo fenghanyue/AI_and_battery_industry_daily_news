@@ -86,3 +86,29 @@ CATEGORIES = [
         "queries": ["AI 传闻 预测 路线图 泄露"],
     },
 ]
+
+# ═══════════════════════════════════════════════════
+#  数据源配置（见 src/sources/）
+# ═══════════════════════════════════════════════════
+# 启用哪些数据源。可选：gmail / rss / search
+# 优先级：--sources 参数 > 环境变量 SOURCES > 此处配置 > 默认 ["gmail"]
+SOURCES = ["gmail"]
+
+# ── RSS 订阅源（SOURCES 含 "rss" 时生效，纯标准库抓取，无需 API key）──
+RSS_FEEDS = [
+    # 国内
+    {"name": "36氪快讯",       "url": "https://www.36kr.com/feed-newsflash", "region": "cn"},
+    {"name": "IT之家",         "url": "https://www.ithome.com/rss/",        "region": "cn"},
+    {"name": "钛媒体",         "url": "https://www.tmtpost.com/rss.xml",    "region": "cn"},
+    # 海外
+    {"name": "TechCrunch",    "url": "https://techcrunch.com/feed/",       "region": "global"},
+    {"name": "The Verge",     "url": "https://www.theverge.com/rss/index.xml", "region": "global"},
+    {"name": "Hacker News",   "url": "https://hnrss.org/frontpage",        "region": "global"},
+]
+
+# ── 搜索源检索式（SOURCES 含 "search" 时生效）──
+SEARCH_QUERIES = [
+    "大模型 最新进展",
+    "AI 产品 发布",
+    "AI 监管 政策",
+]
